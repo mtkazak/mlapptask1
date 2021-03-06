@@ -1,0 +1,153 @@
+---
+title: "Machine Learning Methods and Applications Weeks-1"
+author: "Mutlu Kazak"
+date: "04 03 2021"
+output: pdf_document
+---
+### DATA PROFILING REPORT
+ 
+```{r}
+# Task :Get your data from OpenML dataset by using R and Python and upload the descriptive statistics report to the folder.
+ 
+```
+
+### Needed Packages and Library
+```{r}
+#install.packages("ggpubr")
+#install.packages("ggplot2")
+#install.packages("mlbench")
+library(ggpubr) ; library(mlbench) ; library(ggplot2) ; library(dplyr)
+
+```
+### See the Data
+```{r}
+data(Zoo)
+
+#A data frame with 17 columns: hair, feathers, eggs, milk, airborne, aquatic, predator, toothed, backbone, breathes, venomous, fins, legs, tail, domestic, catsize, type. 
+
+#16 columns are logical and indicate whether the corresponding animal has the corresponsing  characteristic or not. The only 1 exceptions is legs variable takes values 0, 2, 4, 5, 6 and 8. 
+
+glimpse(Zoo)
+
+```
+
+### Basic Statistics
+```{r}
+#Row Counts
+Rows <- length(rownames(Zoo))
+Columns <- length(colnames(Zoo))
+Mis.val <- sum(is.na(Zoo))
+Dis.col <- 16
+Con.col <- 1
+Tot.obs <- length(row(Zoo))
+Names<-c("Rows",
+         "Columns",
+         "Missing Observations",
+         "Discrete Columns",
+         "Continuous Columns",
+         "Total Observation")
+
+Values<-c(Rows,Columns,Mis.val,Dis.col,Con.col,Tot.obs)
+#As we can see in the table , data has 101 rows , 17 columns , 0 missing value , 16 discrete1 Column , 1 Continuous
+df <- data.frame(Names,Values) ; df
+
+
+
+```
+
+
+### Visualization
+```{r}
+ggplot(Zoo , aes(x=legs))+geom_bar(fill="burlywood") + theme_bw() 
+
+a<-ggplot(Zoo , aes(x=hair))+
+       geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+       
+b<-ggplot(Zoo , aes(x=feathers)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+c<-ggplot(Zoo , aes(x=feathers)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+d<-ggplot(Zoo , aes(x=eggs)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+e <- ggplot(Zoo , aes(x=milk)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+
+f<- ggplot(Zoo , aes(x=airborne)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+g<-ggplot(Zoo , aes(x=aquatic)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+h<-ggplot(Zoo , aes(x=predator)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+j<-ggplot(Zoo , aes(x=toothed)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+k<-ggplot(Zoo , aes(x=backbone)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+l<-ggplot(Zoo , aes(x=breathes)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+m<-ggplot(Zoo , aes(x=venomous)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+n<-ggplot(Zoo , aes(x=fins)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+o<-ggplot(Zoo , aes(x=tail)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+p<-ggplot(Zoo , aes(x=domestic)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+r<-ggplot(Zoo , aes(x=catsize)) + 
+      geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+
+# When we search the plots below , we can comment as 
+#- hair variable has 43 True value , it means 43 of 101 animals have hair .
+#- domestic varible has 13 True values , it means 13 of 101 animals are domestic rest of them unteatable animal.
+#- tail variable has 75 True values , it means 75 of 101 animals have tail on their body
+#-
+ggarrange(a,b,c,d,e,f,g,h,j,k,l,m,n,o,p,r + rremove("x.text"), 
+          ncol = 4, nrow = 4)
+```
+
+### Spesific1
+```{r}
+# we can see that in the output which animals have tail [TRUE options says the animal has tail]
+tapply(rownames(Zoo),Zoo$tail,function(x) x) ; ggplot(Zoo , aes(x=tail)) + geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+```
+
+### Spesific2
+```{r}
+# we can see that which animals are domestic.[TRUE options says the animal is domestic]
+tapply(rownames(Zoo),Zoo$domestic,function(x) x) ; ggplot(Zoo , aes(x=domestic)) + geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+
+
+# This codes give us directly which animals domestic 
+rownames(Zoo)[Zoo$domestic]
+```
+ 
+ 
+### Spesific3
+```{r}
+# we can see that which animals have teeth.[TRUE options says the animal has teeth]
+tapply(rownames(Zoo),Zoo$toothed,function(x) x) ; ggplot(Zoo , aes(x=toothed)) + geom_bar(fill="burlywood") + theme_bw() + coord_flip()
+```
+
+
+### Spesific4
+```{r}
+# by looking at the output, we can understand which animal is which type of animal. , there is 41 mammal type animals , 20 bird , 5 reptile , 13 fish , 4 amphibian , 8 insect , 10 mollusc.et.al animals in the data.
+
+tapply(rownames(Zoo),Zoo$type,function(x) x)
+```
+
+
